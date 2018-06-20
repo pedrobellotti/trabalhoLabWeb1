@@ -44,7 +44,7 @@
     </form>
 
     <!--Scrpits-->
-    <script type="text/javascript">		
+    <script type="text/javascript">
 		//Entradas
 		var botao = document.querySelector("#adicionarPessoa");
 		var botaoFixo = document.querySelector("#custoFixo");
@@ -63,6 +63,12 @@
 			nomes: [],
 			adicionar: function(n){
 				this.nomes.push(n);
+			},
+      remover: function(n){
+        if (n > -1) {
+          this.nomes.splice(n, 1);
+          numPessoas--;
+        }
 			}
 		};
 		var tabelaProdutosFixos = {
@@ -84,29 +90,35 @@
 
 		//Resultados
 		function atualiza(){
-			desenharLista();
+			desenharListaPessoas();
 			desenharTabelaFixos();
-			desenharTabela();
+			desenharTabelaPerCapita();
 			exibeCustos();
 		}
 
-		function adicionarLista(e) {
+		function adicionarLista() {
 			numPessoas++;
 			listaPessoa.adicionar(document.formulario.nome.value);
 			document.formulario.nome.value = "";
 			atualiza();
 		}
-		
-		function desenharLista(){
+
+		function desenharListaPessoas(){
 			lista.innerHTML = "";
 			for(var i=0; i<listaPessoa.nomes.length; i++){
-			  var novoLi = document.createElement('li');
+			  novoLi = document.createElement('li');
+        botaoRemover = document.createElement('button');
+        botaoRemover.type = 'button';
+        botaoRemover.innerHTML = '&#10060';
+        botaoRemover.id = 'remover';
 			  novoLi.textContent = listaPessoa.nomes[i];
-			  lista.appendChild(novoLi);
+        novoLi.appendChild(botaoRemover);
+        lista.appendChild(novoLi);
+        botaoRemover.addEventListener("click",listaPessoa.remover(i));
 			}
-		}	
+		}
 
-		function adicionarTabelaFixos(e) {
+		function adicionarTabelaFixos() {
 			tabelaProdutosFixos.adicionar(document.formulario.produto.value);
 			tabelaProdutosFixos.adicionar(document.formulario.preco.value);
 			totalFixos += Number(document.formulario.preco.value);
@@ -115,7 +127,7 @@
 			atualiza();
 		}
 
-		function adicionarTabelaPC(e) {
+		function adicionarTabelaPC() {
 			tabelaProdutosPerCapita.adicionar(document.formulario.produto.value);
 			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value*numPessoas);
 			totalPerCapita += Number(document.formulario.preco.value)*numPessoas;
@@ -138,8 +150,8 @@
 				i++;
 			}
 		}
-		
-		function desenharTabela(){
+
+		function desenharTabelaPerCapita(){
 			tabelaCapita.innerHTML = "";
 			for(var i=0; i<tabelaProdutosPerCapita.produtos.length; i++){
 				var novoTr = document.createElement('tr');
