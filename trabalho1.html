@@ -117,8 +117,8 @@
 
 		function adicionarTabelaPC(e) {
 			tabelaProdutosPerCapita.adicionar(document.formulario.produto.value);
-			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value);
-			totalPerCapita += Number(document.formulario.preco.value);
+			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value*numPessoas);
+			totalPerCapita += Number(document.formulario.preco.value)*numPessoas;
 			document.formulario.produto.value = "";
 			document.formulario.preco.value = "";
 			atualiza();
@@ -146,7 +146,7 @@
 			  var tdNome = document.createElement('td');
 				var tdPreco = document.createElement('td');
 			  tdNome.textContent = tabelaProdutosPerCapita.produtos[i];
-				tdPreco.textContent = tabelaProdutosPerCapita.produtos[i+1]*numPessoas;
+				tdPreco.textContent = tabelaProdutosPerCapita.produtos[i+1];
 				novoTr.appendChild(tdNome);
 				novoTr.appendChild(tdPreco);
 			  tabelaCapita.appendChild(novoTr);
@@ -155,7 +155,7 @@
 		}
 
 		function exibeCustos(){
-			var custoTotal = totalFixos + totalPerCapita*numPessoas;
+			var custoTotal = totalFixos + totalPerCapita;
 			custoIndividual = custoTotal/numPessoas;
 			valorTotal.textContent = custoIndividual.toFixed(2);
 		}
