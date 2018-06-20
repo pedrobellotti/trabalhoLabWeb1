@@ -5,16 +5,12 @@ form {
    background-color: lightblue;
    border:1px solid black;
 }
-ul {
-   border: 1px;
-}
-li {
-   background-color: #CCC;
-   color:blue;
-   width: 350px;
+li{
+  font-size: 15px;
 }
 table{
   border: 1px solid black;
+  background-color:white;
 }
 .valorPercapita{
 	text-align:center;

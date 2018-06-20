@@ -22,7 +22,7 @@
 
       <!--Inputs e botoes para produtos e custos-->
       <div class="produtoseValores">
-        <h1>Produto</h1>
+        <h1>Produtos</h1>
         <input type="text" id="produto" placeholder="Digite o produto"/>
         <input type="text" id="preco" placeholder="Digite o preço"/>
         <button type="button" id="custoFixo">Custo Fixo</button>
@@ -39,16 +39,13 @@
 
       <!--Span para mostrar o valor para cada pessoa-->
       <div class="valorPercapita">
-        <h1>Valor para cada um: R$ <span id="valorPCapita">0</span>&#10060;</h1>
+				<h1>Valor para cada um: R$ <span id="valorPCapita">0</span>&#10060;</h1>
       </div>
     </form>
 
     <!--Scrpits-->
     <script type="text/javascript">		
 		//Entradas
-		var entrada = document.querySelector("#nome");
-		var entradaProduto = document.querySelector("#produto");
-		var entradaPreco = document.querySelector("#preco");
 		var botao = document.querySelector("#adicionarPessoa");
 		var botaoFixo = document.querySelector("#custoFixo");
 		var botaoPC = document.querySelector("#custoPerCapita");
@@ -56,41 +53,48 @@
 		var lista = document.querySelector("#pessoas");
 		var tabelaFixo = document.querySelector("#custosFixos");
 		var tabelaCapita = document.querySelector("#custosPCapita");
+		var valorTotal = document.querySelector("#valorPCapita");
 		//Outras variaveis
+		var numPessoas = 0;
+		var totalFixos = 0;
+		var totalPerCapita = 0;
+		var custoIndividual = 0;
 		var listaPessoa = {
 			nomes: [],
 			adicionar: function(n){
 				this.nomes.push(n);
-				this.callUpdate();
 			}
 		};
-		var tabelaProdutos = {
+		var tabelaProdutosFixos = {
 			produtos: [],
-			adicionar: function(produto,preco){
-				this.produtos.push(produto);
-				this.produtos.push(preco);
-				this.callUpdate();
+			adicionar: function(p){
+				this.produtos.push(p);
+			}
+		};
+		var tabelaProdutosPerCapita = {
+			produtos: [],
+			adicionar: function(p){
+				this.produtos.push(p);
 			}
 		};
 		//Eventos
 		botao.addEventListener("click", adicionarLista);
-		botaoFixo.addEventListener("click", adicionarTabela);
-		listaPessoa.callUpdate = desenharLista;
-		//tabelaFixo.callUpdate = desenharTabela;
-		//tabelaCapita.callUpdate = desenharTabela;
-		
+		botaoFixo.addEventListener("click", adicionarTabelaFixos);
+		botaoPC.addEventListener("click",adicionarTabelaPC);
+
 		//Resultados
+		function atualiza(){
+			desenharLista();
+			desenharTabelaFixos();
+			desenharTabela();
+			exibeCustos();
+		}
+
 		function adicionarLista(e) {
-			//e.preventDefault();
+			numPessoas++;
 			listaPessoa.adicionar(document.formulario.nome.value);
 			document.formulario.nome.value = "";
-		}
-		
-		function adicionarTabela(e) {
-			//e.preventDefault();
-			tabelaProdutos.adicionar(document.formulario.produto.value, document.formulario.preco.value);
-			document.formulario.produto.value = "";
-			document.formulario.preco.value = "";
+			atualiza();
 		}
 		
 		function desenharLista(){
@@ -101,6 +105,60 @@
 			  lista.appendChild(novoLi);
 			}
 		}	
+
+		function adicionarTabelaFixos(e) {
+			tabelaProdutosFixos.adicionar(document.formulario.produto.value);
+			tabelaProdutosFixos.adicionar(document.formulario.preco.value);
+			totalFixos += Number(document.formulario.preco.value);
+			document.formulario.produto.value = "";
+			document.formulario.preco.value = "";
+			atualiza();
+		}
+
+		function adicionarTabelaPC(e) {
+			tabelaProdutosPerCapita.adicionar(document.formulario.produto.value);
+			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value);
+			totalPerCapita += Number(document.formulario.preco.value);
+			document.formulario.produto.value = "";
+			document.formulario.preco.value = "";
+			atualiza();
+		}
+
+		function desenharTabelaFixos(){
+			tabelaFixo.innerHTML = "";
+			for(var i=0; i<tabelaProdutosFixos.produtos.length; i++){
+				var novoTr = document.createElement('tr');
+			  var tdNome = document.createElement('td');
+				var tdPreco = document.createElement('td');
+			  tdNome.textContent = tabelaProdutosFixos.produtos[i];
+				tdPreco.textContent = tabelaProdutosFixos.produtos[i+1];
+				novoTr.appendChild(tdNome);
+				novoTr.appendChild(tdPreco);
+			  tabelaFixo.appendChild(novoTr);
+				i++;
+			}
+		}
+		
+		function desenharTabela(){
+			tabelaCapita.innerHTML = "";
+			for(var i=0; i<tabelaProdutosPerCapita.produtos.length; i++){
+				var novoTr = document.createElement('tr');
+			  var tdNome = document.createElement('td');
+				var tdPreco = document.createElement('td');
+			  tdNome.textContent = tabelaProdutosPerCapita.produtos[i];
+				tdPreco.textContent = tabelaProdutosPerCapita.produtos[i+1]*numPessoas;
+				novoTr.appendChild(tdNome);
+				novoTr.appendChild(tdPreco);
+			  tabelaCapita.appendChild(novoTr);
+				i++;
+			}
+		}
+
+		function exibeCustos(){
+			var custoTotal = totalFixos + totalPerCapita*numPessoas;
+			custoIndividual = custoTotal/numPessoas;
+			valorTotal.textContent = custoIndividual.toFixed(2);
+		}
     </script>
   </body>
 </html>
