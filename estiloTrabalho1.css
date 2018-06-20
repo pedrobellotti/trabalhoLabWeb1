@@ -1,0 +1,20 @@
+.formulario {
+   font-family: sans-serif;
+   font-size: 12px;
+   width: 900px;
+   background-color: lightblue;
+   border:1px solid black;
+}
+ul {
+   border: 1px;
+}
+li {
+   background-color: #CCC;
+   color:blue;
+}
+table{
+  border: 1px solid black;
+}
+#tal, #iA{
+  color:orange;
+}
