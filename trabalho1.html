@@ -6,46 +6,101 @@
     <link rel="stylesheet" href="estiloTrabalho1.css"/>
   </head>
   <body>
-    <div class="formulario">
+    <form name="formulario">
       <!--Input e botao para nome-->
       <div class="nomes">
         <h1>Nome</h1>
-        <input type="text" name="nomePessoa" placeholder="Digite o nome"/>
-        <button type="button" name="adicionarPessoa">Adicionar pessoa</button>
+        <input type="text" id="nome" placeholder="Digite o nome"/>
+        <button type="button" id="adicionarPessoa">Adicionar pessoa</button>
       </div>
 
       <!--Lista para pessoas-->
       <div class="listaPessoas">
         <h1>Pessoas</h1>
-        <ul></ul>
+        <ul id="pessoas"></ul>
       </div>
 
-      <!--Inputs e botoes para adicionar produtos e custos-->
+      <!--Inputs e botoes para produtos e custos-->
       <div class="produtoseValores">
         <h1>Produto</h1>
-        <input type="text" name="produto" placeholder="Digite o produto"/>
-        <input type="text" name="preco" placeholder="Digite o preço"/>
-        <button type="button" name="custoFixo">Custo Fixo</button>
-        <button type="button" name="custoPercapita">Custo Per Capita</button>
+        <input type="text" id="produto" placeholder="Digite o produto"/>
+        <input type="text" id="preco" placeholder="Digite o preço"/>
+        <button type="button" id="custoFixo">Custo Fixo</button>
+        <button type="button" id="custoPerCapita">Custo Per Capita</button>
       </div>
 
       <!--Tabela para exibit os custos-->
       <div class="tabelaCustos">
         <h1>Custos Fixos</h1>
-        <table></table>
+        <table><tbody id="custosFixos"></tbody></table>
         <h1>Custos per capita</h1>
-        <table></table>
+        <table><tbody id="custosPCapita"></tbody></table>
       </div>
 
       <!--Span para mostrar o valor para cada pessoa-->
       <div class="valorPercapita">
-        <h1>Valor para cada um: R$ <span>0</span></h1>
+        <h1>Valor para cada um: R$ <span id="valorPCapita">0</span>&#10060;</h1>
       </div>
-    </div>
+    </form>
 
     <!--Scrpits-->
-    <script type="text/javascript">
-      
+    <script type="text/javascript">		
+		//Entradas
+		var entrada = document.querySelector("#nome");
+		var entradaProduto = document.querySelector("#produto");
+		var entradaPreco = document.querySelector("#preco");
+		var botao = document.querySelector("#adicionarPessoa");
+		var botaoFixo = document.querySelector("#custoFixo");
+		var botaoPC = document.querySelector("#custoPerCapita");
+		//Saidas
+		var lista = document.querySelector("#pessoas");
+		var tabelaFixo = document.querySelector("#custosFixos");
+		var tabelaCapita = document.querySelector("#custosPCapita");
+		//Outras variaveis
+		var listaPessoa = {
+			nomes: [],
+			adicionar: function(n){
+				this.nomes.push(n);
+				this.callUpdate();
+			}
+		};
+		var tabelaProdutos = {
+			produtos: [],
+			adicionar: function(produto,preco){
+				this.produtos.push(produto);
+				this.produtos.push(preco);
+				this.callUpdate();
+			}
+		};
+		//Eventos
+		botao.addEventListener("click", adicionarLista);
+		botaoFixo.addEventListener("click", adicionarTabela);
+		listaPessoa.callUpdate = desenharLista;
+		//tabelaFixo.callUpdate = desenharTabela;
+		//tabelaCapita.callUpdate = desenharTabela;
+		
+		//Resultados
+		function adicionarLista(e) {
+			//e.preventDefault();
+			listaPessoa.adicionar(document.formulario.nome.value);
+			document.formulario.nome.value = "";
+		}
+		
+		function adicionarTabela(e) {
+			//e.preventDefault();
+			tabelaProdutos.adicionar(document.formulario.produto.value, document.formulario.preco.value);
+			document.formulario.produto.value = "";
+			document.formulario.preco.value = "";
+		}
+		
+		function desenharLista(){
+			lista.innerHTML = "";
+			for(var i=0; i<listaPessoa.nomes.length; i++){
+			  var novoLi = document.createElement('li');
+			  novoLi.textContent = listaPessoa.nomes[i];
+			  lista.appendChild(novoLi);
+			}
+		}	
     </script>
   </body>
 </html>

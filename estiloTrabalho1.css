@@ -1,4 +1,4 @@
-.formulario {
+form {
    font-family: sans-serif;
    font-size: 12px;
    width: 900px;
@@ -11,10 +11,12 @@ ul {
 li {
    background-color: #CCC;
    color:blue;
+   width: 350px;
 }
 table{
   border: 1px solid black;
 }
-#tal, #iA{
-  color:orange;
+.valorPercapita{
+	text-align:center;
+	color:red;
 }
