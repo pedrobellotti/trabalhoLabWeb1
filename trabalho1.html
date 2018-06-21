@@ -75,13 +75,23 @@
 			produtos: [],
 			adicionar: function(p){
 				this.produtos.push(p);
-			}
+			},
+      remover: function(n){
+        if (n > -1) {
+          this.produtos.splice(n,2);
+        }
+      }
 		};
 		var tabelaProdutosPerCapita = {
 			produtos: [],
 			adicionar: function(p){
 				this.produtos.push(p);
-			}
+			},
+      remover: function(n){
+        if (n > -1) {
+          this.produtos.splice(n,2);
+        }
+      }
 		};
 		//Eventos
 		botao.addEventListener("click", adicionarLista);
@@ -106,15 +116,19 @@
 		function desenharListaPessoas(){
 			lista.innerHTML = "";
 			for(var i=0; i<listaPessoa.nomes.length; i++){
-			  novoLi = document.createElement('li');
-        botaoRemover = document.createElement('button');
+			  var novoLi = document.createElement('li');
+        var botaoRemover = document.createElement('button');
         botaoRemover.type = 'button';
         botaoRemover.innerHTML = '&#10060';
-        botaoRemover.id = 'remover';
 			  novoLi.textContent = listaPessoa.nomes[i];
         novoLi.appendChild(botaoRemover);
         lista.appendChild(novoLi);
-        botaoRemover.addEventListener("click",listaPessoa.remover(i));
+        botaoRemover.addEventListener("click",function(p){
+          return function(){
+            listaPessoa.remover(p);
+            atualiza();
+          };
+        }(i));
 			}
 		}
 
@@ -142,11 +156,22 @@
 				var novoTr = document.createElement('tr');
 			  var tdNome = document.createElement('td');
 				var tdPreco = document.createElement('td');
+        var botaoRemover = document.createElement('button');
+        botaoRemover.type = 'button';
+        botaoRemover.innerHTML = '&#10060';
 			  tdNome.textContent = tabelaProdutosFixos.produtos[i];
 				tdPreco.textContent = tabelaProdutosFixos.produtos[i+1];
 				novoTr.appendChild(tdNome);
 				novoTr.appendChild(tdPreco);
+        novoTr.appendChild(botaoRemover);
 			  tabelaFixo.appendChild(novoTr);
+        botaoRemover.addEventListener("click",function(p){
+          return function(){
+            totalFixos -= Number(tabelaProdutosFixos.produtos[p+1]);
+            tabelaProdutosFixos.remover(p);
+            atualiza();
+          };
+        }(i));
 				i++;
 			}
 		}
@@ -157,17 +182,28 @@
 				var novoTr = document.createElement('tr');
 			  var tdNome = document.createElement('td');
 				var tdPreco = document.createElement('td');
+        var botaoRemover = document.createElement('button');
+        botaoRemover.type = 'button';
+        botaoRemover.innerHTML = '&#10060';
 			  tdNome.textContent = tabelaProdutosPerCapita.produtos[i];
 				tdPreco.textContent = tabelaProdutosPerCapita.produtos[i+1];
 				novoTr.appendChild(tdNome);
 				novoTr.appendChild(tdPreco);
+        novoTr.appendChild(botaoRemover);
 			  tabelaCapita.appendChild(novoTr);
+        botaoRemover.addEventListener("click",function(p){
+          return function(){
+            totalPerCapita -= Number(tabelaProdutosPerCapita.produtos[p+1]*numPessoas);
+            tabelaProdutosPerCapita.remover(p);
+            atualiza();
+          };
+        }(i));
 				i++;
 			}
 		}
 
 		function exibeCustos(){
-			var custoTotal = totalFixos + totalPerCapita;
+			var custoTotal = totalFixos + (totalPerCapita/numPessoas);
 			custoIndividual = custoTotal/numPessoas;
 			valorTotal.textContent = custoIndividual.toFixed(2);
 		}
