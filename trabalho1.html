@@ -104,7 +104,19 @@
 			desenharTabelaFixos();
 			desenharTabelaPerCapita();
 			exibeCustos();
+      conferePrecos();
 		}
+
+    function conferePrecos(){
+      for(var i=0; i<tabelaProdutosFixos.produtos.length; i++){
+        tabelaProdutosFixos[i+1] = Number(tabelaProdutosFixos[i+1])/Number(numPessoas);
+        i++;
+      }
+      for(var i=0; i<tabelaProdutosPerCapita.produtos.length; i++){
+        tabelaProdutosPerCapita[i+1] = Number(tabelaProdutosPerCapita[i+1])*Number(numPessoas);
+        i++;
+      }
+    }
 
 		function adicionarLista() {
 			numPessoas++;
@@ -143,7 +155,7 @@
 
 		function adicionarTabelaPC() {
 			tabelaProdutosPerCapita.adicionar(document.formulario.produto.value);
-			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value*numPessoas);
+			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value);
 			totalPerCapita += Number(document.formulario.preco.value)*numPessoas;
 			document.formulario.produto.value = "";
 			document.formulario.preco.value = "";
@@ -186,7 +198,7 @@
         botaoRemover.type = 'button';
         botaoRemover.innerHTML = '&#10060';
 			  tdNome.textContent = tabelaProdutosPerCapita.produtos[i];
-				tdPreco.textContent = tabelaProdutosPerCapita.produtos[i+1];
+				tdPreco.textContent = tabelaProdutosPerCapita.produtos[i+1]*numPessoas;
 				novoTr.appendChild(tdNome);
 				novoTr.appendChild(tdPreco);
         novoTr.appendChild(botaoRemover);
@@ -203,7 +215,7 @@
 		}
 
 		function exibeCustos(){
-			var custoTotal = totalFixos + (totalPerCapita/numPessoas);
+			var custoTotal = totalFixos + totalPerCapita;
 			custoIndividual = custoTotal/numPessoas;
 			valorTotal.textContent = custoIndividual.toFixed(2);
 		}
