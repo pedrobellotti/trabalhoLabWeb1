@@ -113,7 +113,7 @@
 		botao.addEventListener("click", adicionarLista);
 		botaoFixo.addEventListener("click", adicionarTabelaFixos);
 		botaoPC.addEventListener("click", adicionarTabelaPC);
-		//Resultados
+		//Atualiza as listas e custos
 		function atualiza() {
 			desenharListaPessoas();
 			desenharTabelaFixos();
@@ -121,6 +121,7 @@
 			exibeCustos();
 			conferePrecos();
 		}
+		//Confere se os precos estao corretos
 		function conferePrecos() {
 			for (var i = 0; i < tabelaProdutosFixos.produtos.length; i++) {
 				tabelaProdutosFixos[i + 1] = Number(tabelaProdutosFixos[i + 1]) / Number(numPessoas);
@@ -131,12 +132,14 @@
 				i++;
 			}
 		}
+		//Adiciona o nome na lista
 		function adicionarLista() {
 			numPessoas++;
 			listaPessoa.adicionar(document.formulario.nome.value);
 			document.formulario.nome.value = "";
 			atualiza();
 		}
+		//Desenha a lista de pessoas
 		function desenharListaPessoas() {
 			lista.innerHTML = "";
 			for (var i = 0; i < listaPessoa.nomes.length; i++) {
@@ -155,6 +158,7 @@
 				}(i));
 			}
 		}
+		//Adiciona produto na tabela de precos fixos
 		function adicionarTabelaFixos() {
 			tabelaProdutosFixos.adicionar(document.formulario.produto.value);
 			tabelaProdutosFixos.adicionar(document.formulario.preco.value);
@@ -163,6 +167,7 @@
 			document.formulario.preco.value = "";
 			atualiza();
 		}
+		//Adiciona produto na tabela de precos per capita
 		function adicionarTabelaPC() {
 			tabelaProdutosPerCapita.adicionar(document.formulario.produto.value);
 			tabelaProdutosPerCapita.adicionar(document.formulario.preco.value);
@@ -171,6 +176,7 @@
 			document.formulario.preco.value = "";
 			atualiza();
 		}
+		//Desenha a tabela de precos fixos
 		function desenharTabelaFixos() {
 			tabelaFixo.innerHTML = "";
 			for (var i = 0; i < tabelaProdutosFixos.produtos.length; i++) {
@@ -196,6 +202,7 @@
 				i++;
 			}
 		}
+		//Desenha a tabela de precos per capita
 		function desenharTabelaPerCapita() {
 			tabelaCapita.innerHTML = "";
 			for (var i = 0; i < tabelaProdutosPerCapita.produtos.length; i++) {
@@ -221,8 +228,9 @@
 				i++;
 			}
 		}
+		//Calcula e exibe o custo para cada um
 		function exibeCustos() {
-			custoIndividual = (totalFixos + totalPerCapita) / numPessoas;
+			custoIndividual = (totalFixos/numPessoas + totalPerCapita) / numPessoas;
 			valorTotal.textContent = custoIndividual.toFixed(2);
 		}
 	</script>
