@@ -23,3 +23,11 @@ table,td,th{
 input{
   width: 120px;
 }
+.dados{
+  position: absolute;
+  top: 10px;
+  left: 920px;
+  background-color: black;
+  border: 1px solid red;
+  color: white;
+}
